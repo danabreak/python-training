@@ -1,6 +1,5 @@
 import sys
 
-
 print("----------------------------------")
 print("|      Name : " + sys.argv[1] + " " * (19 - len(sys.argv[1])) + "|")
 print("|      Age  : " + sys.argv[2] + " " * (19 - len(sys.argv[2])) + "|")
