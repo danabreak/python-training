@@ -1,0 +1,20 @@
+{
+    "Dana": {
+        "phone": "0599",
+        "email": "dana@mail.com",
+        "city": "Nablus",
+        "age": "22"
+    },
+    "Ali": {
+        "phone": "1234",
+        "email": "ali@mail.com",
+        "city": "Ramallah",
+        "age": "30"
+    },
+    "B": {
+        "phone": "2222",
+        "email": "b@mail.com",
+        "city": "Hebron",
+        "age": "25"
+    }
+}
