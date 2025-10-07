@@ -4,8 +4,8 @@ import os
 
 
 def setup_module(module):
-    if os.path.exists("contacts_test.json"):
-        os.remove("contacts_test.json")
+    if os.path.exists("contacts.json"):
+        os.remove("contacts.json")
 
 
 def test_add_and_get():
