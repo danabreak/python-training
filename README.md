@@ -222,6 +222,26 @@ Demonstrates string formatting and user input.
 ▶️ Template Usage
 python src/profile_card.py <name> <age> <city> <title>
 
+
+
+-----
+
+🔒 Strong Password Checker
+
+A simple utility function that validates password strength and raises a custom error if the password is weak.
+
+🧠 Features
+
+- Checks password length (must be ≥ 8 characters).
+
+- Ensures at least one uppercase letter.
+
+- Ensures at least one digit.
+
+- Ensures at least one special character (string.punctuation).
+
+- Raises WeakPasswordError with a descriptive message if invalid.
+
 -----
 
 
