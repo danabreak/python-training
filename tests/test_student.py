@@ -1,5 +1,5 @@
 import pytest
-from oop.student import Student
+from school import Student
 
 
 def test_student_creation():
