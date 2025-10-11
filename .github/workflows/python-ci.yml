@@ -30,7 +30,3 @@ jobs:
         env:
           PYTHONPATH: src
         run: pytest -q
-
-      # اختياري:
-      # - name: Lint
-      #   run: flake8 src tests
