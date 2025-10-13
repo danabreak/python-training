@@ -4,3 +4,5 @@ __pycache__/
 *.json
 *.csv
 exercise.py
+instance/
+*.log
