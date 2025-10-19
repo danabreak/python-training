@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Student Registration</title>
+  <style>
+    body { font-family: system-ui, Arial; margin: 40px; }
+    input { padding: 8px 10px; border: 1px solid #ccc; border-radius: 8px; width: 260px; }
+    label { display:block; margin: 10px 0 6px; }
+    .btn { padding: 8px 14px; border: 0; border-radius: 8px; background:#6a5acd; color:#fff; cursor:pointer; }
+    .errors { color: #c00; margin: 10px 0; }
+    nav a { margin-right: 12px; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/">Register</a>
+    <a href="/students">Students</a>
+  </nav>
+
+  <h1>Student Registration</h1>
+
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div class="errors">
+        <ul>
+          {% for m in messages %}<li>{{ m }}</li>{% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <form method="POST">
+    <label for="name">Full name</label>
+    <input id="name" name="name" placeholder="Dana" required>
+
+    <label for="sid">Student ID</label>
+    <input id="sid" name="sid" placeholder="S1001" required>
+
+    <label for="email">Email</label>
+    <input id="email" name="email" placeholder="dana@example.com" required>
+
+    <div style="margin-top:14px;">
+      <button class="btn" type="submit">Register</button>
+    </div>
+  </form>
+</body>
+</html>

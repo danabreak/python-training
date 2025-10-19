@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Student Portal{% endblock %}
+
+{% block content %}
+<div class="text-center mt-5">
+    <h1>Welcome to the Student Portal</h1>
+    <p class="lead">Manage students and their grades easily.</p>
+    <a href="{{ url_for('list_students') }}" class="btn btn-primary">View Students</a>
+    <a href="{{ url_for('register_student') }}" class="btn btn-success">Register Student</a>
+</div>
+{% endblock %}

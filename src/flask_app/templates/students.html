@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Students</title>
+  <style>
+    body { font-family: system-ui, Arial; margin: 40px; }
+    table { border-collapse: collapse; min-width: 520px; }
+    th, td { border: 1px solid #ddd; padding: 10px 12px; }
+    th { background: #f3f3f7; text-align: left; }
+    nav a { margin-right: 12px; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/">Register</a>
+    <a href="/students">Students</a>
+  </nav>
+
+  <h1>Registered Students</h1>
+
+  {% if students %}
+    <table>
+      <thead>
+        <tr><th>Name</th><th>ID</th><th>Email</th></tr>
+      </thead>
+      <tbody>
+        {% for st in students %}
+          <tr>
+            <td>{{ st.name or st["name"] }}</td>
+            <td>{{ st.sid  or st["sid"]  }}</td>
+            <td>{{ st.email or st["email"] }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No students yet. <a href="/">Register the first one</a>.</p>
+  {% endif %}
+</body>
+</html>

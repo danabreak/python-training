@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Student - Student Portal{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Register New Student</h2>
+<form method="POST">
+    <div class="mb-3">
+        <label for="name" class="form-label">Name</label>
+        <input type="text" class="form-control" id="name" name="name" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="age" class="form-label">Age</label>
+        <input type="number" class="form-control" id="age" name="age" required>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Courses</label><br>
+        {% for c in courses %}
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="course{{ c.id }}" name="courses" value="{{ c.id }}">
+            <label class="form-check-label" for="course{{ c.id }}">{{ c.name }}</label>
+        </div>
+        {% endfor %}
+    </div>
+
+    <button type="submit" class="btn" style="background-color: #800080; color: white;">Add Student</button>
+</form>
+{% endblock %}
