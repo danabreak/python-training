@@ -11,8 +11,8 @@
         <a class="navbar-brand" href="{{ url_for('home') }}">Student Portal</a>
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('list_students') }}">Students</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('add_student') }}">Register Student</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('students.list_students') }}">Students</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('students.add_student') }}">Register Student</a></li>
             </ul>
         </div>
     </div>
