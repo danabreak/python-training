@@ -10,6 +10,14 @@ class Student(db.Model):
     name = db.Column(db.String(80), nullable=False)
     age = db.Column(db.Integer, nullable=False)
     courses = db.relationship('Course', secondary=enrollments, back_populates='students')
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'age': self.age,
+            'courses': [c.name for c in self.courses] 
+        }
+
 
 class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)

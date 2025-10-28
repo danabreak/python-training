@@ -21,8 +21,10 @@ def create_app(config_object=None):
     db.init_app(app)
 
     from .routes.students import students_bp
-    app.register_blueprint(students_bp)
+    from .routes.students_api import students_api_bp
 
+    app.register_blueprint(students_bp)
+    app.register_blueprint(students_api_bp)
 
     @app.route('/')
     def home():
