@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}Pending Course Enrollments{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Pending Course Enrollment Requests</h2>
+
+{% if requests %}
+<table class="table table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>Request ID</th>
+            <th>Student</th>
+            <th>Course</th>
+            <th>Date Requested</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for r in requests %}
+        <tr>
+            <td>{{ r.id }}</td>
+            <td>{{ r.student.name }} ({{ r.student.user.username }})</td>
+            <td>{{ r.course.name }}</td>
+            <td>{{ r.date_requested.strftime('%Y-%m-%d %H:%M') }}</td>
+            <td>
+                <form method="POST" action="{{ url_for('admin.approve_enrollment', request_id=r.id) }}" style="display:inline;">
+                    <button class="btn btn-success btn-sm">Approve</button>
+                </form>
+
+                <form method="POST" action="{{ url_for('admin.reject_enrollment', request_id=r.id) }}" style="display:inline;">
+                    <button class="btn btn-danger btn-sm">Reject</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="alert alert-info">No pending enrollment requests.</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}Enroll in Courses{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Available Courses</h2>
+
+<table class="table table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>Name</th>
+            <th>Instructor</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for c in courses %}
+        <tr>
+            <td>{{ c.name }}</td>
+            <td>{{ c.instructor.username if c.instructor else '-' }}</td>
+            
+
+            <td>
+                {% if c.id in enrolled %}
+                    <span class="badge bg-success">Enrolled</span>
+
+                {% elif c.id in requests %}
+                    {% if requests[c.id] == 'pending' %}
+                        <span class="badge bg-warning text-dark">Pending...</span>
+                    {% elif requests[c.id] == 'rejected' %}
+                        <span class="badge bg-danger">Rejected</span>
+                    {% endif %}
+
+                {% else %}
+                    <form method="POST" action="{{ url_for('students.request_enroll', course_id=c.id) }}">
+                        <button class="btn btn-primary btn-sm">Request Enroll</button>
+                    </form>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

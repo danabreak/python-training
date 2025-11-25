@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Edit Profile</h2>
+
+<form method="POST" enctype="multipart/form-data" class="card p-4 shadow" style="max-width: 600px;">
+    
+    <label class="form-label">Full Name</label>
+    <input type="text" name="name" class="form-control mb-3" value="{{ student.name }}" required>
+
+    <label class="form-label">Age</label>
+    <input type="number" name="age" class="form-control mb-3" value="{{ student.age }}" required>
+
+    <label class="form-label">Profile Picture</label>
+    <input type="file" name="profile_pic" class="form-control mb-3">
+
+   {% if user.profile_pic %}
+<img src="{{ url_for('static', filename='uploads/profile_pics/' ~ user.profile_pic) }}"
+     width="120" class="rounded mb-3 shadow">
+{% endif %}
+
+
+    <button class="btn btn-success">Save Changes</button>
+</form>
+
+{% endblock %}

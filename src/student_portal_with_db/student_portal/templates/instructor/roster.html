@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Roster - {{ course.name }}{% endblock %}
+{% block content %}
+<h2 class="mb-3">Roster: {{ course.name }}</h2>
+
+{% if course.students %}
+  <table class="table table-striped">
+    <thead class="table-dark">
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Age</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for s in course.students %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ s.name }}</td>
+          <td>{{ s.age }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <div class="alert alert-info">No students enrolled yet.</div>
+{% endif %}
+{% endblock %}

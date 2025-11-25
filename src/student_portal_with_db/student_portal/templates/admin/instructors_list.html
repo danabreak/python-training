@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}Instructors{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2>Instructors</h2>
+  <a class="btn" style="background:#800080;color:#fff"
+     href="{{ url_for('admin.add_instructor') }}">
+    + Add Instructor
+  </a>
+</div>
+
+<table class="table table-striped">
+  <thead class="table-dark">
+    <tr>
+      <th>ID</th>
+      <th>Username</th>
+      <th>Courses Taught</th>
+      <th></th>
+
+    </tr>
+  </thead>
+  <tbody>
+    {% for u in instructors %}
+    <tr>
+      <td>{{ u.id }}</td>
+       <td>{{ u.name }} ({{ u.username }})</td>
+      <td>
+        {% if u.courses_taught.count() > 0 %}
+            {{ u.courses_taught.count() }} course(s)
+        {% else %}
+            -
+        {% endif %}
+      </td>
+          <td>
+    <form method="POST" action="{{ url_for('admin.delete_instructor', user_id=u.id) }}" 
+          onsubmit="return confirm('Delete this instructor?');">
+        <button class="btn btn-danger btn-sm">Delete</button>
+    </form>
+</td>
+
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

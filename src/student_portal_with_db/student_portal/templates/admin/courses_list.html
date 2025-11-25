@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Courses (Admin){% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2>Courses</h2>
+  <a class="btn" style="background:#800080;color:#fff" href="{{ url_for('admin.course_new') }}">+ New Course</a>
+</div>
+
+<table class="table table-striped">
+  <thead class="table-dark">
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Instructor</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for c in courses %}
+      <tr>
+        <td>{{ c.id }}</td>
+        <td>{{ c.name }}</td>
+        <td>{{ c.instructor and c.instructor.username or '-' }}</td>
+        <td>
+          <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('admin.course_edit', cid=c.id) }}">
+            Edit
+          </a>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
