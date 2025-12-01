@@ -31,14 +31,27 @@ def generate_random_password(length=10):
     return ''.join(random.choices(chars, k=length))
 
 
-@admin_bp.route("/courses", methods=["GET"])
+#-------------------- courses ------------------------
+@admin_bp.route('/courses', methods=['GET'])
 @login_required
-@role_required("admin")
+@role_required('admin')
 def courses_list():
-    courses = Course.query.all()
-    return render_template("admin/courses_list.html", courses=courses)
+    q = request.args.get("q", "").strip()
+    page = request.args.get("page", 1, type=int)
 
+    query = Course.query
 
+    # البحث باسم الكورس
+    if q:
+        query = query.filter(Course.name.ilike(f"%{q}%"))
+
+    courses = query.order_by(Course.id.desc()).paginate(page=page, per_page=5)
+
+    return render_template(
+        'admin/courses_list.html',
+        courses=courses,
+        q=q
+    )
 
 
 @admin_bp.route("/courses/new", methods=["GET", "POST"])
@@ -100,6 +113,11 @@ def course_edit(cid):
     return render_template("admin/course_form.html", course=course, instructors=instructors)
 
 
+#-----------------------------------------------------------
+
+
+
+#------------------------ students -----------------------------------
 
 
 
@@ -151,6 +169,8 @@ def reject_student(user_id):
 
     flash(f"Student '{user.username}' rejected.", "info")
     return redirect(url_for("admin.pending_students"))
+
+
 @admin_bp.route("/students/new", methods=["GET", "POST"])
 @login_required
 @role_required("admin")
@@ -216,22 +236,85 @@ def add_student():
     )
 
 
-
-@admin_bp.route("/students")
+@admin_bp.route("/students", methods=["GET"])
 @login_required
 @role_required("admin")
 def students_list():
-    students = Student.query.all()
-    return render_template("admin/students_list.html", students=students)
+    # 1) قراءة قيم البحث والصفحة
+    q = request.args.get("q", "").strip()
+    page = request.args.get("page", 1, type=int)
+
+    # 2) بناء query
+    query = Student.query
+
+    if q:
+        query = query.filter(Student.name.ilike(f"%{q}%"))
+
+    # 3) Pagination
+    students = query.order_by(Student.id.desc()).paginate(page=page, per_page=5)
+
+    # 4) إرسال النتيجة للقالب
+    return render_template(
+        "admin/students_list.html",
+        students=students,
+        q=q
+    )
 
 
 
-@admin_bp.route("/instructors")
+@admin_bp.route("/students/delete/<int:student_id>", methods=["POST"])
+@login_required
+@role_required("admin")
+def delete_student(student_id):
+    student = Student.query.get_or_404(student_id)
+    user = student.user
+
+    student.courses.clear()
+
+    for req in student.enrollment_requests:
+        db.session.delete(req)
+
+    db.session.delete(student)
+
+    if user:
+        db.session.delete(user)
+
+    db.session.commit()
+    flash("Student deleted successfully.", "success")
+
+    return redirect(url_for("admin.students_list"))
+
+
+
+
+
+#----------------------------- instructors op --------------------------
+@admin_bp.route("/instructors", methods=["GET"])
 @login_required
 @role_required("admin")
 def instructors_list():
-    instructors = User.query.filter_by(role="instructor").all()
-    return render_template("admin/instructors_list.html", instructors=instructors)
+    q = request.args.get("q", "").strip()
+    page = request.args.get("page", 1, type=int)
+
+    # نجيب فقط مستخدمين دورهم instructor
+    query = User.query.filter_by(role="instructor")
+
+    # بحث بالاسم (Name أو Username)
+    if q:
+        query = query.filter(
+            (User.name.ilike(f"%{q}%")) |
+            (User.username.ilike(f"%{q}%"))
+        )
+
+    instructors = query.order_by(User.id.desc()).paginate(page=page, per_page=5)
+
+    return render_template(
+        "admin/instructors_list.html",
+        instructors=instructors,
+        q=q
+    )
+
+
 
 @admin_bp.route("/instructors/new", methods=["GET", "POST"])
 @login_required
@@ -278,28 +361,6 @@ def add_instructor():
 
 
 
-@admin_bp.route("/students/delete/<int:student_id>", methods=["POST"])
-@login_required
-@role_required("admin")
-def delete_student(student_id):
-    student = Student.query.get_or_404(student_id)
-    user = student.user
-
-    student.courses.clear()
-
-    for req in student.enrollment_requests:
-        db.session.delete(req)
-
-    db.session.delete(student)
-
-    if user:
-        db.session.delete(user)
-
-    db.session.commit()
-    flash("Student deleted successfully.", "success")
-
-    return redirect(url_for("admin.students_list"))
-
 
 
 @admin_bp.route("/instructors/delete/<int:user_id>", methods=["POST"])
@@ -323,6 +384,10 @@ def delete_instructor(user_id):
     return redirect(url_for("admin.instructors_list"))
 
 
+#---------------------------------------------------------
+
+
+#---------------------- enrollments -----------------------
 
 @admin_bp.route("/pending-enrollments")
 @login_required
@@ -368,3 +433,8 @@ def reject_enrollment(request_id):
 
     flash(f"Enrollment rejected for student {req.student.name}.", "info")
     return redirect(url_for("admin.pending_enrollments"))
+
+
+#----------------------------------------
+
+

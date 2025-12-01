@@ -2,45 +2,78 @@
 {% block title %}Instructors{% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-3">
-  <h2>Instructors</h2>
-  <a class="btn" style="background:#800080;color:#fff"
-     href="{{ url_for('admin.add_instructor') }}">
-    + Add Instructor
-  </a>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="m-0">Instructors</h2>
+
+    <a href="{{ url_for('admin.add_instructor') }}"
+       class="btn px-3"
+       style="background:#800080; color:white; font-weight:500; border-radius:6px;">
+        + Add Instructor
+    </a>
 </div>
 
-<table class="table table-striped">
-  <thead class="table-dark">
-    <tr>
-      <th>ID</th>
-      <th>Username</th>
-      <th>Courses Taught</th>
-      <th></th>
+<!-- Search -->
+<form method="GET" class="mb-3 d-flex" style="max-width:400px;">
+    <input type="text"
+           class="form-control me-2"
+           name="q"
+           placeholder="Search instructor..."
+           value="{{ q }}">
+    <button class="btn btn-primary">Search</button>
+</form>
 
-    </tr>
-  </thead>
-  <tbody>
-    {% for u in instructors %}
-    <tr>
-      <td>{{ u.id }}</td>
-       <td>{{ u.name }} ({{ u.username }})</td>
-      <td>
-        {% if u.courses_taught.count() > 0 %}
-            {{ u.courses_taught.count() }} course(s)
-        {% else %}
-            -
+<!-- Table -->
+<div class="card shadow-sm">
+    <div class="card-body p-0">
+        <table class="table table-striped mb-0">
+            <thead class="table-dark">
+                <tr>
+                    <th width="80">ID</th>
+                    <th>Name</th>
+                    <th>Username</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ins in instructors.items %}
+                <tr>
+                    <td>{{ ins.id }}</td>
+                    <td>{{ ins.name }}</td>
+                    <td>{{ ins.username }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Pagination -->
+<nav aria-label="Page navigation" class="mt-3">
+    <ul class="pagination">
+        {% if instructors.has_prev %}
+        <li class="page-item">
+            <a class="page-link"
+               href="?page={{ instructors.prev_num }}&q={{ q }}">Previous</a>
+        </li>
         {% endif %}
-      </td>
-          <td>
-    <form method="POST" action="{{ url_for('admin.delete_instructor', user_id=u.id) }}" 
-          onsubmit="return confirm('Delete this instructor?');">
-        <button class="btn btn-danger btn-sm">Delete</button>
-    </form>
-</td>
 
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+        {% for p in instructors.iter_pages() %}
+            {% if p %}
+                <li class="page-item {% if p == instructors.page %}active{% endif %}">
+                    <a class="page-link" href="?page={{ p }}&q={{ q }}">{{ p }}</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled"><span class="page-link">…</span></li>
+            {% endif %}
+        {% endfor %}
+
+        {% if instructors.has_next %}
+        <li class="page-item">
+            <a class="page-link"
+               href="?page={{ instructors.next_num }}&q={{ q }}">Next</a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+
 {% endblock %}

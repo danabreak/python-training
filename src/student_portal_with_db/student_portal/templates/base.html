@@ -20,14 +20,11 @@
                 {% if current_user.is_authenticated and current_user.role == 'admin' %}
 <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.pending_students') }}">Pending Students</a></li>
 <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.pending_enrollments') }}">Enrollment Requests</a></li>
-<a class="nav-link" href="{{ url_for('students.list_students') }}">Students</a>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.add_student') }}">Add Student</a></li>
+<a class="nav-link" href="{{ url_for('admin.students_list') }}">Students</a>
 
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.instructors_list') }}">Instructors</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.add_instructor') }}">Add Instructor</a></li>
 
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.courses_list') }}">Courses</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.course_new') }}">Add Course</a></li>
 
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a></li>
                 {% endif %}
@@ -42,14 +39,19 @@
 
                 {# ---------------- STUDENT LINKS ---------------- #}
                 {% if current_user.is_authenticated and current_user.role == 'student' %}
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('students.me') }}">My Profile</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a></li>
                     <li class="nav-item">
         <a class="nav-link" href="{{ url_for('students.my_courses') }}">My Courses</a>
     </li>
      <li class="nav-item">
 <a class="nav-link" href="{{ url_for('students.browse_courses') }}">Browse Courses</a>
-    </li>
+    </li>       
+    
+    
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('students.me') }}">My Profile</a></li>
+
+
+     <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a></li>
+
 
 
                 {% endif %}

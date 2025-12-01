@@ -14,6 +14,8 @@ def my_courses():
     courses = Course.query.filter_by(instructor_id=current_user.id).all()
     return render_template("instructor/courses.html", courses=courses)
 
+
+
 @instructor_bp.route("/courses/<int:cid>/roster")
 @login_required
 @role_required("instructor")

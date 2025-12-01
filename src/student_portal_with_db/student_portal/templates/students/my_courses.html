@@ -16,7 +16,7 @@
         {% for c in courses %}
         <tr>
 <td>
-    <a href="{{ url_for('courses_api.course_details', cid=c.id) }}"
+    <a href="{{ url_for('courses.course_details', cid=c.id) }}"
        class="text-decoration-none">
        {{ c.name }}
     </a>

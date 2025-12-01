@@ -1,27 +1,36 @@
-{% extends 'base.html' %}
-{% block title %}Edit Profile{% endblock %}
-
+{% extends "base.html" %}
 {% block content %}
-<h2 class="mb-4">Edit Profile</h2>
 
-<form method="POST" enctype="multipart/form-data" class="card p-4 shadow" style="max-width: 600px;">
-    
-    <label class="form-label">Full Name</label>
-    <input type="text" name="name" class="form-control mb-3" value="{{ student.name }}" required>
+<h2>Edit Profile</h2>
 
-    <label class="form-label">Age</label>
-    <input type="number" name="age" class="form-control mb-3" value="{{ student.age }}" required>
+<form method="POST" enctype="multipart/form-data" style="max-width:400px;">
+    {{ form.hidden_tag() }}
 
-    <label class="form-label">Profile Picture</label>
-    <input type="file" name="profile_pic" class="form-control mb-3">
+    <div class="mb-3">
+        {{ form.name.label(class="form-label") }}
+        {{ form.name(class="form-control") }}
+        {% for error in form.name.errors %}
+            <div class="text-danger">{{ error }}</div>
+        {% endfor %}
+    </div>
 
-   {% if user.profile_pic %}
-<img src="{{ url_for('static', filename='uploads/profile_pics/' ~ user.profile_pic) }}"
-     width="120" class="rounded mb-3 shadow">
-{% endif %}
+    <div class="mb-3">
+        {{ form.age.label(class="form-label") }}
+        {{ form.age(class="form-control") }}
+        {% for error in form.age.errors %}
+            <div class="text-danger">{{ error }}</div>
+        {% endfor %}
+    </div>
 
+    <div class="mb-3">
+        {{ form.profile_pic.label(class="form-label") }}
+        {{ form.profile_pic(class="form-control") }}
+        {% for error in form.profile_pic.errors %}
+            <div class="text-danger">{{ error }}</div>
+        {% endfor %}
+    </div>
 
-    <button class="btn btn-success">Save Changes</button>
+    {{ form.submit(class="btn btn-primary") }}
 </form>
 
 {% endblock %}

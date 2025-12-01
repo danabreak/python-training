@@ -63,9 +63,10 @@
 
     <div class="profile-wrapper">
 
-        <img class="profile-image"
-     src="{{ url_for('static', filename='uploads/profile_pics/' ~ (student.user.profile_pic or 'default.png')) }}"
-     alt="Profile Image">
+       {% if student.user.profile_pic %}
+    <img src="{{ url_for('static', filename='uploads/profile_pics/' ~ student.user.profile_pic) }}"
+         class="img-thumbnail" width="150">
+{% endif %}
 
 
         <div class="profile-info">
