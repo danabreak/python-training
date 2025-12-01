@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}Add Instructor{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4">Add New Instructor</h2>
+
+{# -------- SHOW CREDENTIALS AFTER SUCCESS -------- #}
+{% if credentials %}
+<div class="card shadow-sm mb-4" style="border-left:5px solid #6a0dad;">
+    <div class="card-body">
+        <h4 class="text-success mb-3">Instructor Created Successfully!</h4>
+
+        <p><strong>Name:</strong> {{ credentials.name }}</p>
+        <p><strong>Generated Username:</strong> {{ credentials.username }}</p>
+        <p><strong>Generated Password:</strong> {{ credentials.password }}</p>
+
+        <a href="{{ url_for('admin.add_instructor') }}" class="btn btn-primary mt-3">
+            Add Another Instructor
+        </a>
+    </div>
+</div>
+{% endif %}
+
+
+{# -------- FORM HIDDEN AFTER SUCCESS -------- #}
+{% if not hide_form %}
+<form method="POST" class="mt-4">
+
+    <div class="mb-3">
+        <label class="form-label">Instructor Name</label>
+        <input type="text" class="form-control" name="name" required>
+    </div>
+
+    <button class="btn" style="background:#800080; color:white;">
+        Add Instructor
+    </button>
+
+</form>
+{% endif %}
+
+{% endblock %}

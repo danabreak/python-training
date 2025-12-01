@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request, abort
-from student_portal.models import Student, db, Course
+from student_portal.models import Student, db, Course, User
 from sqlalchemy.exc import SQLAlchemyError
+
 
 students_api_bp = Blueprint('students_api', __name__, url_prefix='/api/students')
 
@@ -14,7 +15,6 @@ def get_students():
     except SQLAlchemyError as e:
         return jsonify({"error": "Database error", "details": str(e)}), 500
 
-
 # ------------------ ADD STUDENT ------------------
 @students_api_bp.route('', methods=['POST'])
 def add_student():
@@ -27,23 +27,32 @@ def add_student():
         if not isinstance(age, int) or age < 0:
             return jsonify({"error": "'age' must be a positive integer"}), 400
 
+        # ----------------------------
+        # Create user automatically
+        # ----------------------------
+        username = data['name'].lower().replace(" ", "") + "01"
+        user = User(username=username, role="student")
+        user.set_password("pass123")
+
         student = Student(
             name=data['name'],
-            age=age
+            age=age,
+            user=user
         )
 
+        # ----------------------------
+        # Courses
+        # ----------------------------
         course_names = data.get('courses', [])
         if not isinstance(course_names, list):
             return jsonify({"error": "'courses' must be a list of course names"}), 400
 
         for cname in course_names:
             course = Course.query.filter_by(name=cname).first()
-            if course:
-                student.courses.append(course)
-            else:
-                new_course = Course(name=cname)
-                db.session.add(new_course)
-                student.courses.append(new_course)
+            if not course:
+                course = Course(name=cname)
+                db.session.add(course)
+            student.courses.append(course)
 
         db.session.add(student)
         db.session.commit()
@@ -54,6 +63,8 @@ def add_student():
         return jsonify({"error": "Database error", "details": str(e)}), 500
     except Exception as e:
         return jsonify({"error": "Internal server error", "details": str(e)}), 500
+
+
 
 
 # ------------------ UPDATE STUDENT ------------------

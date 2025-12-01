@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}My Courses{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">My Courses</h2>
+
+{% if courses %}
+<table class="table table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>Course</th>
+            <th>Instructor</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for c in courses %}
+        <tr>
+<td>
+    <a href="{{ url_for('courses.course_details', cid=c.id) }}"
+       class="text-decoration-none">
+       {{ c.name }}
+    </a>
+</td>
+
+            <td>{{ c.instructor.name if c.instructor else '-' }}</td>
+            
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% else %}
+<div class="alert alert-info">
+    You are not enrolled in any courses yet.
+</div>
+{% endif %}
+{% endblock %}
